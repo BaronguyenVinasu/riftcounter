@@ -1,0 +1,704 @@
+openapi: 3.0.3
+info:
+  title: RiftCounter API
+  description: Wild Rift counter-pick and strategy assistant API
+  version: 1.0.0
+  contact:
+    name: RiftCounter Team
+  license:
+    name: MIT
+
+servers:
+  - url: http://localhost:3001/api
+    description: Local development server
+  - url: https://api.riftcounter.com/api
+    description: Production server
+
+paths:
+  /champions:
+    get:
+      summary: Get all champions
+      description: Returns a paginated list of all champions with optional filtering
+      tags:
+        - Champions
+      parameters:
+        - name: role
+          in: query
+          description: Filter by lane role
+          schema:
+            type: string
+            enum: [baron, mid, jungle, adc, support]
+        - name: search
+          in: query
+          description: Search query for fuzzy matching
+          schema:
+            type: string
+        - name: page
+          in: query
+          description: Page number
+          schema:
+            type: integer
+            default: 1
+        - name: limit
+          in: query
+          description: Items per page
+          schema:
+            type: integer
+            default: 100
+            maximum: 200
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChampionsResponse'
+
+  /champions/search:
+    get:
+      summary: Search champions
+      description: Fuzzy search for champions by name or alias
+      tags:
+        - Champions
+      parameters:
+        - name: q
+          in: query
+          required: true
+          description: Search query
+          schema:
+            type: string
+            minLength: 2
+        - name: limit
+          in: query
+          description: Maximum results to return
+          schema:
+            type: integer
+            default: 10
+            maximum: 20
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ChampionSummary'
+
+  /champions/{id}:
+    get:
+      summary: Get champion by ID
+      description: Returns detailed champion information
+      tags:
+        - Champions
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Champion ID
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChampionResponse'
+        '404':
+          description: Champion not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /champions/{id}/builds:
+    get:
+      summary: Get champion builds
+      description: Returns aggregated builds for a champion
+      tags:
+        - Champions
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Champion ID
+          schema:
+            type: string
+        - name: lane
+          in: query
+          description: Filter builds by lane
+          schema:
+            type: string
+            enum: [baron, mid, jungle, adc, support]
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BuildsResponse'
+        '404':
+          description: Champion not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /analyze:
+    post:
+      summary: Analyze matchup
+      description: Analyze enemy lineup and get counter picks, tactics, and builds
+      tags:
+        - Analysis
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AnalyzeRequest'
+      responses:
+        '200':
+          description: Successful analysis
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AnalysisResponse'
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '429':
+          description: Rate limit exceeded
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /items:
+    get:
+      summary: Get all items
+      description: Returns a paginated list of all items
+      tags:
+        - Items
+      parameters:
+        - name: tag
+          in: query
+          description: Filter by item tag
+          schema:
+            type: string
+        - name: search
+          in: query
+          description: Search query
+          schema:
+            type: string
+        - name: page
+          in: query
+          schema:
+            type: integer
+            default: 1
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            default: 100
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ItemsResponse'
+
+  /sources:
+    get:
+      summary: Get data sources status
+      description: Returns status and freshness information for all data sources
+      tags:
+        - Sources
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SourcesResponse'
+
+components:
+  schemas:
+    ChampionSummary:
+      type: object
+      properties:
+        id:
+          type: string
+          example: yasuo
+        name:
+          type: string
+          example: Yasuo
+        displayName:
+          type: string
+          example: Yasuo
+        roles:
+          type: array
+          items:
+            type: string
+          example: [mid, baron]
+        tags:
+          type: array
+          items:
+            type: string
+          example: [fighter, assassin]
+        iconUrl:
+          type: string
+          nullable: true
+
+    Champion:
+      allOf:
+        - $ref: '#/components/schemas/ChampionSummary'
+        - type: object
+          properties:
+            aliases:
+              type: array
+              items:
+                type: string
+            rangeType:
+              type: string
+              enum: [melee, ranged]
+            mobilityScore:
+              type: number
+            ccScore:
+              type: number
+            burstScore:
+              type: number
+            sustainScore:
+              type: number
+            waveclearScore:
+              type: number
+            roamScore:
+              type: number
+            scaleScore:
+              type: number
+            damageProfile:
+              type: object
+              properties:
+                physical:
+                  type: number
+                magic:
+                  type: number
+                true_damage:
+                  type: number
+            powerSpikes:
+              type: array
+              items:
+                $ref: '#/components/schemas/PowerSpike'
+            sources:
+              type: array
+              items:
+                $ref: '#/components/schemas/DataSource'
+            lastUpdated:
+              type: string
+              format: date-time
+
+    PowerSpike:
+      type: object
+      properties:
+        type:
+          type: string
+          enum: [level, item, time]
+        value:
+          oneOf:
+            - type: number
+            - type: string
+        power:
+          type: number
+        notes:
+          type: string
+
+    DataSource:
+      type: object
+      properties:
+        name:
+          type: string
+        url:
+          type: string
+        fetched:
+          type: string
+          format: date-time
+        reliability:
+          type: number
+
+    Build:
+      type: object
+      properties:
+        id:
+          type: string
+        championId:
+          type: string
+        name:
+          type: string
+        type:
+          type: string
+          enum: [default, situational, off-meta]
+        playstyle:
+          type: string
+        items:
+          type: array
+          items:
+            type: string
+        boots:
+          type: string
+        emblems:
+          type: object
+        situationalSwaps:
+          type: array
+          items:
+            type: object
+        skillOrder:
+          type: string
+        notes:
+          type: string
+        confidence:
+          type: number
+        sources:
+          type: array
+          items:
+            $ref: '#/components/schemas/DataSource'
+
+    Item:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+        cost:
+          type: number
+        stats:
+          type: object
+        tags:
+          type: array
+          items:
+            type: string
+        passive:
+          type: string
+        active:
+          type: string
+
+    AnalyzeRequest:
+      type: object
+      required:
+        - enemies
+        - lane
+      properties:
+        enemies:
+          type: array
+          items:
+            type: string
+          minItems: 1
+          maxItems: 5
+          example: [Jinx, Lee Sin, Lux]
+        lane:
+          type: string
+          example: bot
+        yourChampion:
+          type: string
+          nullable: true
+        options:
+          type: object
+          properties:
+            preferCounters:
+              type: boolean
+              default: true
+            playstyle:
+              type: string
+              enum: [aggressive, farming, roaming]
+            maxCounters:
+              type: integer
+              default: 5
+            includeOffMeta:
+              type: boolean
+              default: false
+
+    AnalysisResponse:
+      type: object
+      properties:
+        normalizedEnemies:
+          type: array
+          items:
+            $ref: '#/components/schemas/ChampionSummary'
+        lane:
+          type: string
+        laneEnemy:
+          $ref: '#/components/schemas/ChampionSummary'
+        counters:
+          type: array
+          items:
+            $ref: '#/components/schemas/CounterPick'
+        tactics:
+          type: array
+          items:
+            $ref: '#/components/schemas/Tactic'
+        builds:
+          type: array
+          items:
+            $ref: '#/components/schemas/BuildRecommendation'
+        skillCombos:
+          type: array
+          items:
+            $ref: '#/components/schemas/SkillCombo'
+        powerSpikes:
+          type: array
+          items:
+            $ref: '#/components/schemas/PowerSpikeEntry'
+        abilityWarnings:
+          type: array
+          items:
+            type: object
+        confidence:
+          type: number
+        uncertainty:
+          type: string
+          enum: [low, medium, high]
+        uncertaintyReason:
+          type: string
+          nullable: true
+        sources:
+          type: array
+          items:
+            $ref: '#/components/schemas/DataSource'
+        lastRefreshed:
+          type: string
+          format: date-time
+        patchVersion:
+          type: string
+
+    CounterPick:
+      type: object
+      properties:
+        champion:
+          $ref: '#/components/schemas/ChampionSummary'
+        reason:
+          type: string
+        confidence:
+          type: number
+        winrateEst:
+          type: number
+          nullable: true
+        difficulty:
+          type: string
+          enum: [easy, medium, hard]
+        sources:
+          type: array
+          items:
+            $ref: '#/components/schemas/DataSource'
+
+    Tactic:
+      type: object
+      properties:
+        id:
+          type: string
+        title:
+          type: string
+        phase:
+          type: string
+          enum: [early, mid, late, teamfight]
+        steps:
+          type: array
+          items:
+            type: object
+            properties:
+              action:
+                type: string
+              timing:
+                type: string
+              condition:
+                type: string
+        reasoning:
+          type: string
+        priority:
+          type: number
+
+    BuildRecommendation:
+      type: object
+      properties:
+        type:
+          type: string
+          enum: [default, situational, counter]
+        items:
+          type: array
+          items:
+            type: string
+        boots:
+          type: string
+        emblems:
+          type: object
+        confidence:
+          type: number
+        reasoning:
+          type: string
+        sources:
+          type: array
+          items:
+            $ref: '#/components/schemas/DataSource'
+        swapsApplied:
+          type: array
+          items:
+            type: object
+
+    SkillCombo:
+      type: object
+      properties:
+        name:
+          type: string
+        sequence:
+          type: string
+        description:
+          type: string
+        timing:
+          type: string
+        difficulty:
+          type: string
+        damage:
+          type: string
+
+    PowerSpikeEntry:
+      type: object
+      properties:
+        time:
+          type: string
+        type:
+          type: string
+        champion:
+          type: string
+        description:
+          type: string
+        advantage:
+          type: string
+
+    ChampionsResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/ChampionSummary'
+        pagination:
+          $ref: '#/components/schemas/Pagination'
+
+    ChampionResponse:
+      type: object
+      properties:
+        champion:
+          $ref: '#/components/schemas/Champion'
+        sources:
+          type: array
+          items:
+            $ref: '#/components/schemas/DataSource'
+
+    BuildsResponse:
+      type: object
+      properties:
+        championId:
+          type: string
+        builds:
+          type: array
+          items:
+            $ref: '#/components/schemas/Build'
+        sources:
+          type: array
+          items:
+            $ref: '#/components/schemas/DataSource'
+        lastUpdated:
+          type: string
+          format: date-time
+
+    ItemsResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Item'
+        pagination:
+          $ref: '#/components/schemas/Pagination'
+
+    SourcesResponse:
+      type: object
+      properties:
+        sources:
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+              url:
+                type: string
+              status:
+                type: string
+                enum: [healthy, stale, error]
+              lastFetched:
+                type: string
+                format: date-time
+              nextRefresh:
+                type: string
+                format: date-time
+              reliability:
+                type: number
+              itemCount:
+                type: number
+        patchVersion:
+          type: string
+        patchDate:
+          type: string
+        dataFreshness:
+          type: string
+          enum: [fresh, stale, outdated]
+        uncertaintyLevel:
+          type: string
+          enum: [low, medium, high]
+
+    Pagination:
+      type: object
+      properties:
+        page:
+          type: integer
+        limit:
+          type: integer
+        total:
+          type: integer
+        totalPages:
+          type: integer
+
+    Error:
+      type: object
+      properties:
+        error:
+          type: string
+        code:
+          type: string
+        details:
+          type: object
+
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-API-Key
+
+tags:
+  - name: Champions
+    description: Champion data and search
+  - name: Analysis
+    description: Matchup analysis and recommendations
+  - name: Items
+    description: Item data
+  - name: Sources
+    description: Data source management
