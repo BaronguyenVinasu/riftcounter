@@ -4,13 +4,13 @@
  * Handles champion data access and fuzzy search
  */
 
-import Fuse from 'fuse.js';
+import Fuse, { IFuseOptions } from 'fuse.js';
 import { Champion, ChampionSummary, Lane, LANE_ALIASES } from '../shared';
 import { cacheGet, cacheSet, cacheKeys } from './cache';
 import { championsData } from '../data/champions';
 
 // Fuse.js configuration for fuzzy search
-const fuseOptions: Fuse.IFuseOptions<ChampionSummary> = {
+const fuseOptions: IFuseOptions<ChampionSummary> = {
   keys: [
     { name: 'name', weight: 0.4 },
     { name: 'displayName', weight: 0.3 },
@@ -38,7 +38,7 @@ export function getChampionSummaries(): ChampionSummary[] {
     displayName: c.displayName,
     roles: c.roles,
     tags: c.tags,
-    iconUrl: c.iconUrl,
+    
   }));
 }
 
