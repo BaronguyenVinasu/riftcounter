@@ -5,7 +5,7 @@
  */
 
 import Fuse from 'fuse.js';
-import { Champion, ChampionSummary, Lane, LANE_ALIASES } from '@riftcounter/shared';
+import { Champion, ChampionSummary, Lane, LANE_ALIASES } from './shared';
 import { cacheGet, cacheSet, cacheKeys } from './cache';
 import { championsData } from '../data/champions';
 

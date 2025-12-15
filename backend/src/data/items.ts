@@ -4,7 +4,7 @@
  * Seed data for Wild Rift items
  */
 
-import { Item } from '@riftcounter/shared';
+import { Item } from './shared';
 
 export const itemsData: Item[] = [
   // Damage Items

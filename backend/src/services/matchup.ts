@@ -16,7 +16,7 @@ import {
   PowerSpikeEntry,
   AbilityWarning,
   SkillCombo,
-} from '@riftcounter/shared';
+} from './shared';
 import { getChampionById, getChampionsByRole } from './champion';
 import { matchupsData } from '../data/matchups';
 
