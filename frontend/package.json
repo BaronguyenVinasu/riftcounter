@@ -13,7 +13,6 @@
     "test:watch": "vitest"
   },
   "dependencies": {
-    "@riftcounter/shared": "workspace:*",
     "clsx": "^2.0.0",
     "next": "^14.0.4",
     "react": "^18.2.0",
