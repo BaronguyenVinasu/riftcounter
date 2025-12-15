@@ -5,11 +5,13 @@ import { ChampionSelect } from '@/components/ChampionSelect';
 import { LaneSelector } from '@/components/LaneSelector';
 import { ResultsPanel } from '@/components/ResultsPanel';
 import { SourceStrip } from '@/components/SourceStrip';
-import type { Lane, AnalysisResponse } from '@riftcounter/shared';
+import PlayAsSelector from '@/components/PlayAsSelector';
+import type { Lane, AnalysisResponse, ChampionSummary } from '@riftcounter/shared';
 
 export default function HomePage() {
   const [selectedEnemies, setSelectedEnemies] = useState<string[]>([]);
   const [selectedLane, setSelectedLane] = useState<Lane | null>(null);
+  const [playerChampion, setPlayerChampion] = useState<any>(null);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [results, setResults] = useState<AnalysisResponse | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -32,8 +34,9 @@ export default function HomePage() {
         body: JSON.stringify({
           enemies: selectedEnemies,
           lane: selectedLane,
+          playerChampion: playerChampion?.id,
           options: {
-            preferCounters: true,
+            preferCounters: !playerChampion,
             maxCounters: 5,
           },
         }),
@@ -56,6 +59,7 @@ export default function HomePage() {
   const handleReset = () => {
     setSelectedEnemies([]);
     setSelectedLane(null);
+    setPlayerChampion(null);
     setResults(null);
     setError(null);
   };
@@ -101,6 +105,16 @@ export default function HomePage() {
             />
           </div>
         </div>
+      </div>
+
+      {/* Play As Selector */}
+      <div className="mb-8">
+        <PlayAsSelector
+          selectedChampion={playerChampion}
+          onSelect={setPlayerChampion}
+          onAnalyze={handleAnalyze}
+          disabled={isAnalyzing || selectedEnemies.length === 0 || !selectedLane}
+        />
       </div>
 
       {/* Error Message */}
