@@ -4,7 +4,7 @@
  * Seed data for champion builds
  */
 
-import { Build } from './shared';
+import { Build } from '../shared';
 
 export const buildsData: Build[] = [
   // Yasuo builds

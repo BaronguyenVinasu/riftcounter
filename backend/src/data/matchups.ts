@@ -4,7 +4,7 @@
  * Seed data for champion matchup scores
  */
 
-import { MatchupScore } from './shared';
+import { MatchupScore } from '../shared';
 
 export const matchupsData: MatchupScore[] = [
   // Yasuo matchups

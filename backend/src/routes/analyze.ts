@@ -10,7 +10,7 @@ import crypto from 'crypto';
 import {
   AnalysisResponse,
   ChampionSummary,
-} from './shared';
+} from '../shared';
 import {
   normalizeChampionInputs,
   normalizeLane,

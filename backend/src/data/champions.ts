@@ -5,7 +5,7 @@
  * In production, this would be loaded from the database
  */
 
-import { Champion } from './shared';
+import { Champion } from '../shared';
 
 export const championsData: Champion[] = [
   {

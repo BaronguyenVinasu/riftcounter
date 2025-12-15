@@ -13,7 +13,7 @@ import {
   Lane,
   Item,
   DataSource,
-} from './shared';
+} from '../shared';
 import { config } from '../config';
 import { buildsData } from '../data/builds';
 import { itemsData } from '../data/items';

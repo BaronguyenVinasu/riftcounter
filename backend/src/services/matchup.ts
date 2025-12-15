@@ -16,7 +16,7 @@ import {
   PowerSpikeEntry,
   AbilityWarning,
   SkillCombo,
-} from './shared';
+} from '../shared';
 import { getChampionById, getChampionsByRole } from './champion';
 import { matchupsData } from '../data/matchups';
 
