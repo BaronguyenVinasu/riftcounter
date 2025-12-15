@@ -1,0 +1,749 @@
+{
+  "version": "1.0.0",
+  "patchVersion": "5.4",
+  "lastUpdated": "2025-12-15T00:00:00Z",
+  "champions": [
+    {
+      "id": "ahri",
+      "name": "Ahri",
+      "displayName": "Ahri",
+      "aliases": ["nine tails", "fox", "9 tails"],
+      "roles": ["mid"],
+      "tags": ["mage", "assassin"],
+      "rangeType": "ranged",
+      "damageProfile": { "physical": 5, "magic": 90, "trueDamage": 5 },
+      "baseStats": { "health": 526, "armor": 21, "magicResist": 30 },
+      "baseProfiles": {
+        "mobilityScore": 8,
+        "ccScore": 6,
+        "burstScore": 8,
+        "sustainScore": 5,
+        "waveclearScore": 7,
+        "scaleScore": 7,
+        "roamScore": 8
+      },
+      "powerSpikes": [
+        { "type": "level", "value": 6, "power": 0.85, "notes": "Spirit Rush enables aggressive plays and escapes" },
+        { "type": "item", "value": "Luden's Echo", "power": 0.8, "notes": "Major damage spike with burst combo" },
+        { "type": "level", "value": 9, "power": 0.75, "notes": "Maxed Q for waveclear and poke" }
+      ],
+      "abilities": {
+        "passive": { "name": "Essence Theft", "description": "Gains a stack when hitting enemies with abilities. At 9 stacks, heals on next ability hit." },
+        "q": { "name": "Orb of Deception", "description": "Throws orb dealing magic damage out and true damage on return." },
+        "w": { "name": "Fox-Fire", "description": "Releases three fox-fires that target nearby enemies." },
+        "e": { "name": "Charm", "description": "Blows a kiss that charms first enemy hit, making them walk toward Ahri." },
+        "ultimate": { "name": "Spirit Rush", "description": "Dashes forward and fires essence bolts. Can cast three times." }
+      },
+      "canonicalBuilds": [
+        {
+          "type": "standard",
+          "name": "Burst Mage",
+          "items": ["Luden's Echo", "Rabadon's Deathcap", "Lich Bane", "Void Staff", "Morellonomicon"],
+          "emblem": "Electrocute",
+          "situationalSwaps": [
+            { "condition": "heavy AP team", "swap": "Rabadon's Deathcap", "for": "Banshee's Veil" },
+            { "condition": "heavy healing", "swap": "Lich Bane", "for": "Morellonomicon" }
+          ],
+          "confidence": 85,
+          "sources": ["WildRiftFire", "RiftCounter Analysis"]
+        },
+        {
+          "type": "utility",
+          "name": "Roaming Assassin",
+          "items": ["Hextech Rocketbelt", "Lich Bane", "Rabadon's Deathcap", "Void Staff", "Banshee's Veil"],
+          "emblem": "Electrocute",
+          "situationalSwaps": [],
+          "confidence": 75,
+          "sources": ["RiftCounter Analysis"]
+        },
+        {
+          "type": "safe",
+          "name": "Safe Scaling",
+          "items": ["Rod of Ages", "Rabadon's Deathcap", "Lich Bane", "Void Staff", "Guardian Angel"],
+          "emblem": "Conqueror",
+          "situationalSwaps": [],
+          "confidence": 70,
+          "sources": ["RiftCounter Analysis"]
+        }
+      ],
+      "microTips": [
+        "Land Charm (E) before using full combo - it amplifies damage and guarantees Q hits",
+        "Use Spirit Rush to dodge key abilities, not just for damage - each dash is valuable",
+        "Q return deals true damage - position to hit enemies on the way back for max damage"
+      ],
+      "abilitySummaries": {
+        "q": "Skillshot orb: magic out, true damage back",
+        "w": "Auto-target fire bolts",
+        "e": "Charm skillshot - key CC",
+        "r": "3-charge dash with damage"
+      }
+    },
+    {
+      "id": "lux",
+      "name": "Lux",
+      "displayName": "Lux",
+      "aliases": ["luxanna", "light mage"],
+      "roles": ["mid", "sup"],
+      "tags": ["mage", "support"],
+      "rangeType": "ranged",
+      "damageProfile": { "physical": 0, "magic": 100, "trueDamage": 0 },
+      "baseStats": { "health": 490, "armor": 19, "magicResist": 30 },
+      "baseProfiles": {
+        "mobilityScore": 3,
+        "ccScore": 7,
+        "burstScore": 9,
+        "sustainScore": 3,
+        "waveclearScore": 8,
+        "scaleScore": 8,
+        "roamScore": 5
+      },
+      "powerSpikes": [
+        { "type": "level", "value": 6, "power": 0.9, "notes": "Final Spark enables long-range burst kills" },
+        { "type": "item", "value": "Luden's Echo", "power": 0.85, "notes": "Massive poke and waveclear upgrade" },
+        { "type": "level", "value": 9, "power": 0.75, "notes": "Maxed E for safe farming and poke" }
+      ],
+      "abilities": {
+        "passive": { "name": "Illumination", "description": "Abilities mark enemies. Auto attacks consume marks for bonus damage." },
+        "q": { "name": "Light Binding", "description": "Fires light that roots up to two enemies." },
+        "w": { "name": "Prismatic Barrier", "description": "Throws wand that shields allies it passes through." },
+        "e": { "name": "Lucent Singularity", "description": "Creates a zone that slows and detonates for damage." },
+        "ultimate": { "name": "Final Spark", "description": "Fires a long-range laser dealing massive damage." }
+      },
+      "canonicalBuilds": [
+        {
+          "type": "standard",
+          "name": "Artillery Mage",
+          "items": ["Luden's Echo", "Rabadon's Deathcap", "Awakened Soulstealer", "Void Staff", "Morellonomicon"],
+          "emblem": "Aery",
+          "situationalSwaps": [
+            { "condition": "assassin heavy", "swap": "Awakened Soulstealer", "for": "Zhonya's Hourglass" }
+          ],
+          "confidence": 88,
+          "sources": ["WildRiftFire", "RiftCounter Analysis"]
+        },
+        {
+          "type": "burst",
+          "name": "One-Shot Build",
+          "items": ["Luden's Echo", "Rabadon's Deathcap", "Infinity Orb", "Void Staff", "Lich Bane"],
+          "emblem": "Electrocute",
+          "situationalSwaps": [],
+          "confidence": 78,
+          "sources": ["RiftCounter Analysis"]
+        },
+        {
+          "type": "utility",
+          "name": "Team Utility",
+          "items": ["Luden's Echo", "Staff of Flowing Water", "Rabadon's Deathcap", "Void Staff", "Ardent Censer"],
+          "emblem": "Aery",
+          "situationalSwaps": [],
+          "confidence": 72,
+          "sources": ["RiftCounter Analysis"]
+        }
+      ],
+      "microTips": [
+        "Always auto-attack after abilities to proc Illumination passive for bonus damage",
+        "E can be detonated early - use this to catch enemies trying to walk out",
+        "Use W shield proactively when engaging - it shields twice (going out and coming back)"
+      ],
+      "abilitySummaries": {
+        "q": "Snare skillshot - hits 2 targets",
+        "w": "Boomerang shield",
+        "e": "AoE slow/damage zone",
+        "r": "Long-range laser nuke"
+      }
+    },
+    {
+      "id": "syndra",
+      "name": "Syndra",
+      "displayName": "Syndra",
+      "aliases": ["dark sovereign", "ball mage"],
+      "roles": ["mid"],
+      "tags": ["mage", "burst"],
+      "rangeType": "ranged",
+      "damageProfile": { "physical": 0, "magic": 100, "trueDamage": 0 },
+      "baseStats": { "health": 523, "armor": 19, "magicResist": 30 },
+      "baseProfiles": {
+        "mobilityScore": 3,
+        "ccScore": 8,
+        "burstScore": 10,
+        "sustainScore": 2,
+        "waveclearScore": 7,
+        "scaleScore": 9,
+        "roamScore": 4
+      },
+      "powerSpikes": [
+        { "type": "level", "value": 6, "power": 0.95, "notes": "Unleashed Power provides massive single-target burst" },
+        { "type": "item", "value": "Luden's Echo", "power": 0.85, "notes": "Core item for burst and mana" },
+        { "type": "level", "value": 9, "power": 0.8, "notes": "Maxed Q for sphere generation" }
+      ],
+      "abilities": {
+        "passive": { "name": "Transcendent", "description": "Abilities gain bonus effects at max rank." },
+        "q": { "name": "Dark Sphere", "description": "Creates a sphere at target location dealing magic damage." },
+        "w": { "name": "Force of Will", "description": "Picks up and throws a sphere or minion." },
+        "e": { "name": "Scatter the Weak", "description": "Knocks back and stuns enemies hit by spheres." },
+        "ultimate": { "name": "Unleashed Power", "description": "Hurls all spheres at target, more spheres = more damage." }
+      },
+      "canonicalBuilds": [
+        {
+          "type": "standard",
+          "name": "Burst Control",
+          "items": ["Luden's Echo", "Rabadon's Deathcap", "Void Staff", "Infinity Orb", "Morellonomicon"],
+          "emblem": "Electrocute",
+          "situationalSwaps": [
+            { "condition": "heavy dive", "swap": "Infinity Orb", "for": "Zhonya's Hourglass" }
+          ],
+          "confidence": 87,
+          "sources": ["WildRiftFire", "RiftCounter Analysis"]
+        },
+        {
+          "type": "scaling",
+          "name": "Late Game Monster",
+          "items": ["Rod of Ages", "Rabadon's Deathcap", "Void Staff", "Infinity Orb", "Awakened Soulstealer"],
+          "emblem": "Conqueror",
+          "situationalSwaps": [],
+          "confidence": 75,
+          "sources": ["RiftCounter Analysis"]
+        },
+        {
+          "type": "aggressive",
+          "name": "Lane Bully",
+          "items": ["Luden's Echo", "Infinity Orb", "Rabadon's Deathcap", "Void Staff", "Lich Bane"],
+          "emblem": "Electrocute",
+          "situationalSwaps": [],
+          "confidence": 73,
+          "sources": ["RiftCounter Analysis"]
+        }
+      ],
+      "microTips": [
+        "Have 6-7 spheres on the field before ulting for maximum damage output",
+        "E+Q combo (cast E then immediately Q) creates a long-range stun - practice this",
+        "Use W to pick up enemy jungle camps for extra damage and deny farm"
+      ],
+      "abilitySummaries": {
+        "q": "Place damage sphere",
+        "w": "Grab and throw sphere/minion",
+        "e": "Knockback - stuns through spheres",
+        "r": "Multi-sphere burst on single target"
+      }
+    },
+    {
+      "id": "orianna",
+      "name": "Orianna",
+      "displayName": "Orianna",
+      "aliases": ["ori", "ball lady", "clockwork"],
+      "roles": ["mid"],
+      "tags": ["mage", "support"],
+      "rangeType": "ranged",
+      "damageProfile": { "physical": 10, "magic": 90, "trueDamage": 0 },
+      "baseStats": { "health": 530, "armor": 19, "magicResist": 30 },
+      "baseProfiles": {
+        "mobilityScore": 4,
+        "ccScore": 8,
+        "burstScore": 7,
+        "sustainScore": 4,
+        "waveclearScore": 8,
+        "scaleScore": 9,
+        "roamScore": 5
+      },
+      "powerSpikes": [
+        { "type": "level", "value": 6, "power": 0.85, "notes": "Shockwave provides game-changing teamfight ultimate" },
+        { "type": "item", "value": "Luden's Echo", "power": 0.8, "notes": "Strong waveclear and poke" },
+        { "type": "level", "value": 5, "power": 0.7, "notes": "Strong trading with maxed Q" }
+      ],
+      "abilities": {
+        "passive": { "name": "Clockwork Windup", "description": "Auto attacks deal bonus magic damage, stacking on same target." },
+        "q": { "name": "Command: Attack", "description": "Commands ball to move to location, damaging enemies passed." },
+        "w": { "name": "Command: Dissonance", "description": "Ball releases pulse that damages and speeds/slows." },
+        "e": { "name": "Command: Protect", "description": "Ball attaches to ally, shielding them." },
+        "ultimate": { "name": "Command: Shockwave", "description": "Ball pulls in nearby enemies, dealing massive damage." }
+      },
+      "canonicalBuilds": [
+        {
+          "type": "standard",
+          "name": "Team Utility",
+          "items": ["Luden's Echo", "Rabadon's Deathcap", "Void Staff", "Zhonya's Hourglass", "Morellonomicon"],
+          "emblem": "Aery",
+          "situationalSwaps": [
+            { "condition": "heavy AD", "swap": "Morellonomicon", "for": "Frozen Heart" }
+          ],
+          "confidence": 86,
+          "sources": ["WildRiftFire", "RiftCounter Analysis"]
+        },
+        {
+          "type": "burst",
+          "name": "Damage Focus",
+          "items": ["Luden's Echo", "Rabadon's Deathcap", "Infinity Orb", "Void Staff", "Lich Bane"],
+          "emblem": "Electrocute",
+          "situationalSwaps": [],
+          "confidence": 76,
+          "sources": ["RiftCounter Analysis"]
+        },
+        {
+          "type": "supportive",
+          "name": "Enchanter Hybrid",
+          "items": ["Luden's Echo", "Staff of Flowing Water", "Rabadon's Deathcap", "Ardent Censer", "Void Staff"],
+          "emblem": "Aery",
+          "situationalSwaps": [],
+          "confidence": 68,
+          "sources": ["RiftCounter Analysis"]
+        }
+      ],
+      "microTips": [
+        "Place ball on engaging allies before fights - E them, then R for surprise Shockwave",
+        "Use W speed boost on yourself or allies for rotations and chases",
+        "Auto-attack weave in lane - passive deals significant damage when stacked"
+      ],
+      "abilitySummaries": {
+        "q": "Move ball - damages in path",
+        "w": "Ball pulse - damage/speed zone",
+        "e": "Shield ally, ball follows them",
+        "r": "Pull enemies to ball - huge damage"
+      }
+    },
+    {
+      "id": "yasuo",
+      "name": "Yasuo",
+      "displayName": "Yasuo",
+      "aliases": ["yas", "windshitter", "0/10 powerspike"],
+      "roles": ["mid", "top"],
+      "tags": ["fighter", "assassin"],
+      "rangeType": "melee",
+      "damageProfile": { "physical": 95, "magic": 5, "trueDamage": 0 },
+      "baseStats": { "health": 490, "armor": 30, "magicResist": 30 },
+      "baseProfiles": {
+        "mobilityScore": 9,
+        "ccScore": 5,
+        "burstScore": 8,
+        "sustainScore": 6,
+        "waveclearScore": 9,
+        "scaleScore": 10,
+        "roamScore": 6
+      },
+      "powerSpikes": [
+        { "type": "item", "value": "Infinity Edge", "power": 0.95, "notes": "100% crit - massive damage spike" },
+        { "type": "level", "value": 6, "power": 0.8, "notes": "Last Breath enables kills on knocked-up targets" },
+        { "type": "item", "value": "Solari Chargeblade", "power": 0.85, "notes": "50% crit unlocks scaling" }
+      ],
+      "abilities": {
+        "passive": { "name": "Way of the Wanderer", "description": "Double crit chance, gains shield from movement." },
+        "q": { "name": "Steel Tempest", "description": "Thrusts forward, third cast sends tornado." },
+        "w": { "name": "Wind Wall", "description": "Creates wall that blocks all projectiles." },
+        "e": { "name": "Sweeping Blade", "description": "Dashes through enemy, can't dash same target quickly." },
+        "ultimate": { "name": "Last Breath", "description": "Blinks to airborne enemies, suspends them, dealing damage." }
+      },
+      "canonicalBuilds": [
+        {
+          "type": "standard",
+          "name": "Crit Fighter",
+          "items": ["Solari Chargeblade", "Infinity Edge", "Bloodthirster", "Guardian Angel", "Mortal Reminder"],
+          "emblem": "Conqueror",
+          "situationalSwaps": [
+            { "condition": "heavy CC", "swap": "Guardian Angel", "for": "Mercurial Scimitar" },
+            { "condition": "tank heavy", "swap": "Bloodthirster", "for": "Blade of the Ruined King" }
+          ],
+          "confidence": 90,
+          "sources": ["WildRiftFire", "RiftCounter Analysis"]
+        },
+        {
+          "type": "lifesteal",
+          "name": "Sustain Fighter",
+          "items": ["Solari Chargeblade", "Infinity Edge", "Blade of the Ruined King", "Bloodthirster", "Death's Dance"],
+          "emblem": "Conqueror",
+          "situationalSwaps": [],
+          "confidence": 82,
+          "sources": ["RiftCounter Analysis"]
+        },
+        {
+          "type": "burst",
+          "name": "Assassin Yasuo",
+          "items": ["Solari Chargeblade", "Infinity Edge", "Navori Quickblades", "Guardian Angel", "Mortal Reminder"],
+          "emblem": "Fleet Footwork",
+          "situationalSwaps": [],
+          "confidence": 75,
+          "sources": ["RiftCounter Analysis"]
+        }
+      ],
+      "microTips": [
+        "Stack Q tornado before engaging - E into enemy, then EQ for guaranteed knockup",
+        "Save Wind Wall for critical abilities - don't waste it on poke",
+        "Use E on minions to position for Q poke, then E out through minions"
+      ],
+      "abilitySummaries": {
+        "q": "Stacking thrust - 3rd is tornado",
+        "w": "Projectile-blocking wall",
+        "e": "Targeted dash through enemies",
+        "r": "Blink to airborne, bonus armor pen"
+      }
+    },
+    {
+      "id": "fizz",
+      "name": "Fizz",
+      "displayName": "Fizz",
+      "aliases": ["fish", "troll pole", "cancer fish"],
+      "roles": ["mid"],
+      "tags": ["assassin", "mage"],
+      "rangeType": "melee",
+      "damageProfile": { "physical": 15, "magic": 85, "trueDamage": 0 },
+      "baseStats": { "health": 570, "armor": 22, "magicResist": 32 },
+      "baseProfiles": {
+        "mobilityScore": 9,
+        "ccScore": 5,
+        "burstScore": 10,
+        "sustainScore": 3,
+        "waveclearScore": 5,
+        "scaleScore": 7,
+        "roamScore": 9
+      },
+      "powerSpikes": [
+        { "type": "level", "value": 6, "power": 0.95, "notes": "Chum the Waters enables one-shot burst combos" },
+        { "type": "level", "value": 3, "power": 0.75, "notes": "All abilities unlocked - can trade effectively" },
+        { "type": "item", "value": "Lich Bane", "power": 0.85, "notes": "Empowers burst with auto weaving" }
+      ],
+      "abilities": {
+        "passive": { "name": "Nimble Fighter", "description": "Takes reduced damage from auto attacks, ignores unit collision." },
+        "q": { "name": "Urchin Strike", "description": "Dashes through target dealing magic damage." },
+        "w": { "name": "Seastone Trident", "description": "Empowers next attack, resets on kill." },
+        "e": { "name": "Playful/Trickster", "description": "Hops onto trident becoming untargetable, can hop again or slam down." },
+        "ultimate": { "name": "Chum the Waters", "description": "Throws fish that attaches to enemy, shark emerges dealing massive damage." }
+      },
+      "canonicalBuilds": [
+        {
+          "type": "standard",
+          "name": "Burst Assassin",
+          "items": ["Lich Bane", "Rabadon's Deathcap", "Infinity Orb", "Void Staff", "Zhonya's Hourglass"],
+          "emblem": "Electrocute",
+          "situationalSwaps": [
+            { "condition": "heavy CC", "swap": "Infinity Orb", "for": "Banshee's Veil" }
+          ],
+          "confidence": 89,
+          "sources": ["WildRiftFire", "RiftCounter Analysis"]
+        },
+        {
+          "type": "ap_bruiser",
+          "name": "Bruiser Fizz",
+          "items": ["Lich Bane", "Rod of Ages", "Rabadon's Deathcap", "Zhonya's Hourglass", "Void Staff"],
+          "emblem": "Conqueror",
+          "situationalSwaps": [],
+          "confidence": 74,
+          "sources": ["RiftCounter Analysis"]
+        },
+        {
+          "type": "snowball",
+          "name": "Mejai's Rush",
+          "items": ["Mejai's Soulstealer", "Lich Bane", "Rabadon's Deathcap", "Void Staff", "Zhonya's Hourglass"],
+          "emblem": "Electrocute",
+          "situationalSwaps": [],
+          "confidence": 65,
+          "sources": ["RiftCounter Analysis"]
+        }
+      ],
+      "microTips": [
+        "E (Playful) makes you untargetable - use it to dodge key abilities, not just for damage",
+        "Q applies on-hit effects - Lich Bane proc on Q + auto + W deals massive damage",
+        "Ult hitbox is on the fish, not the shark - aim where enemy will be"
+      ],
+      "abilitySummaries": {
+        "q": "Dash through target",
+        "w": "Empower auto - reset on kill",
+        "e": "Untargetable hop - can re-hop or slam",
+        "r": "Fish attach -> shark knockup"
+      }
+    },
+    {
+      "id": "talon",
+      "name": "Talon",
+      "displayName": "Talon",
+      "aliases": ["blade", "parkour guy"],
+      "roles": ["mid", "jg"],
+      "tags": ["assassin"],
+      "rangeType": "melee",
+      "damageProfile": { "physical": 95, "magic": 0, "trueDamage": 5 },
+      "baseStats": { "health": 588, "armor": 30, "magicResist": 32 },
+      "baseProfiles": {
+        "mobilityScore": 10,
+        "ccScore": 3,
+        "burstScore": 10,
+        "sustainScore": 4,
+        "waveclearScore": 7,
+        "scaleScore": 6,
+        "roamScore": 10
+      },
+      "powerSpikes": [
+        { "type": "level", "value": 2, "power": 0.8, "notes": "W+Q combo chunks enemies hard" },
+        { "type": "level", "value": 6, "power": 0.9, "notes": "Shadow Assault enables all-in kills and escapes" },
+        { "type": "item", "value": "Youmuu's Ghostblade", "power": 0.85, "notes": "Lethality + MS for roams" }
+      ],
+      "abilities": {
+        "passive": { "name": "Blade's End", "description": "Abilities apply stacks, at 3 stacks next auto deals bonus damage." },
+        "q": { "name": "Noxian Diplomacy", "description": "Stab nearby or leap to distant enemies, crits low HP targets." },
+        "w": { "name": "Rake", "description": "Throws blades that return, slowing enemies." },
+        "e": { "name": "Assassin's Path", "description": "Vaults over terrain, can't use same terrain for a while." },
+        "ultimate": { "name": "Shadow Assault", "description": "Becomes invisible, blades circle and return on attack/recast." }
+      },
+      "canonicalBuilds": [
+        {
+          "type": "standard",
+          "name": "Lethality Burst",
+          "items": ["Youmuu's Ghostblade", "Duskblade of Draktharr", "Serylda's Grudge", "Edge of Night", "Guardian Angel"],
+          "emblem": "Electrocute",
+          "situationalSwaps": [
+            { "condition": "tank heavy", "swap": "Edge of Night", "for": "Black Cleaver" }
+          ],
+          "confidence": 91,
+          "sources": ["WildRiftFire", "RiftCounter Analysis"]
+        },
+        {
+          "type": "bruiser",
+          "name": "Bruiser Talon",
+          "items": ["Black Cleaver", "Youmuu's Ghostblade", "Death's Dance", "Serylda's Grudge", "Guardian Angel"],
+          "emblem": "Conqueror",
+          "situationalSwaps": [],
+          "confidence": 76,
+          "sources": ["RiftCounter Analysis"]
+        },
+        {
+          "type": "roaming",
+          "name": "Roam King",
+          "items": ["Youmuu's Ghostblade", "Boots of Swiftness", "Duskblade of Draktharr", "Edge of Night", "Serylda's Grudge"],
+          "emblem": "Phase Rush",
+          "situationalSwaps": [],
+          "confidence": 72,
+          "sources": ["RiftCounter Analysis"]
+        }
+      ],
+      "microTips": [
+        "W -> melee Q -> auto procs passive instantly for fast burst trade",
+        "Use E (wall hop) to roam faster than anyone - path through jungle walls",
+        "R into W for guaranteed W return hit - massive burst combo"
+      ],
+      "abilitySummaries": {
+        "q": "Short stab or long leap",
+        "w": "Boomerang blades - slow",
+        "e": "Terrain vault - long per-wall cooldown",
+        "r": "Invis + circling blades"
+      }
+    },
+    {
+      "id": "katarina",
+      "name": "Katarina",
+      "displayName": "Katarina",
+      "aliases": ["kat", "kata", "dagger girl"],
+      "roles": ["mid"],
+      "tags": ["assassin", "mage"],
+      "rangeType": "melee",
+      "damageProfile": { "physical": 20, "magic": 75, "trueDamage": 5 },
+      "baseStats": { "health": 602, "armor": 28, "magicResist": 32 },
+      "baseProfiles": {
+        "mobilityScore": 10,
+        "ccScore": 2,
+        "burstScore": 10,
+        "sustainScore": 3,
+        "waveclearScore": 6,
+        "scaleScore": 8,
+        "roamScore": 9
+      },
+      "powerSpikes": [
+        { "type": "level", "value": 6, "power": 0.85, "notes": "Death Lotus provides massive teamfight damage" },
+        { "type": "level", "value": 3, "power": 0.75, "notes": "Full combo available for trades" },
+        { "type": "item", "value": "Hextech Rocketbelt", "power": 0.8, "notes": "Gap closer + burst damage" }
+      ],
+      "abilities": {
+        "passive": { "name": "Voracity", "description": "Kills/assists reset ability cooldowns. Picking up daggers spins dealing damage." },
+        "q": { "name": "Bouncing Blade", "description": "Throws dagger that bounces and lands behind first target." },
+        "w": { "name": "Preparation", "description": "Tosses dagger up that lands after delay." },
+        "e": { "name": "Shunpo", "description": "Blinks to target, reduced CD when picking up daggers." },
+        "ultimate": { "name": "Death Lotus", "description": "Channels, throwing daggers at nearby enemies rapidly." }
+      },
+      "canonicalBuilds": [
+        {
+          "type": "standard",
+          "name": "AP Assassin",
+          "items": ["Hextech Rocketbelt", "Lich Bane", "Rabadon's Deathcap", "Infinity Orb", "Void Staff"],
+          "emblem": "Electrocute",
+          "situationalSwaps": [
+            { "condition": "heavy healing", "swap": "Infinity Orb", "for": "Morellonomicon" }
+          ],
+          "confidence": 87,
+          "sources": ["WildRiftFire", "RiftCounter Analysis"]
+        },
+        {
+          "type": "hybrid",
+          "name": "AD/AP Hybrid",
+          "items": ["Blade of the Ruined King", "Nashor's Tooth", "Rabadon's Deathcap", "Lich Bane", "Void Staff"],
+          "emblem": "Conqueror",
+          "situationalSwaps": [],
+          "confidence": 74,
+          "sources": ["RiftCounter Analysis"]
+        },
+        {
+          "type": "bruiser",
+          "name": "Bruiser Kat",
+          "items": ["Hextech Rocketbelt", "Zhonya's Hourglass", "Rabadon's Deathcap", "Lich Bane", "Guardian Angel"],
+          "emblem": "Conqueror",
+          "situationalSwaps": [],
+          "confidence": 70,
+          "sources": ["RiftCounter Analysis"]
+        }
+      ],
+      "microTips": [
+        "Q -> E to dagger -> W -> E to W dagger for full combo without using E cooldown inefficiently",
+        "In teamfights, wait for CC to be used before going in - you're squishy",
+        "E resets on dagger pickup - use this for multiple dashes in fights"
+      ],
+      "abilitySummaries": {
+        "q": "Bouncing dagger - lands behind target",
+        "w": "Toss dagger up - lands at your position",
+        "e": "Blink to anything - reset on dagger",
+        "r": "Channel AoE dagger throw"
+      }
+    },
+    {
+      "id": "twistedfate",
+      "name": "Twisted Fate",
+      "displayName": "Twisted Fate",
+      "aliases": ["tf", "card master"],
+      "roles": ["mid"],
+      "tags": ["mage"],
+      "rangeType": "ranged",
+      "damageProfile": { "physical": 25, "magic": 75, "trueDamage": 0 },
+      "baseStats": { "health": 534, "armor": 21, "magicResist": 30 },
+      "baseProfiles": {
+        "mobilityScore": 5,
+        "ccScore": 7,
+        "burstScore": 6,
+        "sustainScore": 4,
+        "waveclearScore": 8,
+        "scaleScore": 7,
+        "roamScore": 10
+      },
+      "powerSpikes": [
+        { "type": "level", "value": 6, "power": 0.95, "notes": "Destiny enables global presence and ganks" },
+        { "type": "item", "value": "Lich Bane", "power": 0.85, "notes": "Empowers gold card burst" },
+        { "type": "level", "value": 5, "power": 0.7, "notes": "Maxed Q for waveclear" }
+      ],
+      "abilities": {
+        "passive": { "name": "Loaded Dice", "description": "Killing units grants bonus gold." },
+        "q": { "name": "Wild Cards", "description": "Throws three cards in a cone dealing magic damage." },
+        "w": { "name": "Pick a Card", "description": "Cycles through cards: Blue (mana), Red (AoE slow), Gold (stun)." },
+        "e": { "name": "Stacked Deck", "description": "Every fourth attack deals bonus damage and gives attack speed." },
+        "ultimate": { "name": "Destiny", "description": "Reveals all enemies, can teleport to a location." }
+      },
+      "canonicalBuilds": [
+        {
+          "type": "standard",
+          "name": "Burst Mage",
+          "items": ["Lich Bane", "Rabadon's Deathcap", "Void Staff", "Zhonya's Hourglass", "Infinity Orb"],
+          "emblem": "Electrocute",
+          "situationalSwaps": [
+            { "condition": "assassin heavy", "swap": "Infinity Orb", "for": "Banshee's Veil" }
+          ],
+          "confidence": 86,
+          "sources": ["WildRiftFire", "RiftCounter Analysis"]
+        },
+        {
+          "type": "utility",
+          "name": "Utility TF",
+          "items": ["Rod of Ages", "Lich Bane", "Rabadon's Deathcap", "Rylai's Crystal Scepter", "Void Staff"],
+          "emblem": "Phase Rush",
+          "situationalSwaps": [],
+          "confidence": 78,
+          "sources": ["RiftCounter Analysis"]
+        },
+        {
+          "type": "attack_speed",
+          "name": "On-Hit TF",
+          "items": ["Nashor's Tooth", "Lich Bane", "Rabadon's Deathcap", "Wit's End", "Void Staff"],
+          "emblem": "Lethal Tempo",
+          "situationalSwaps": [],
+          "confidence": 68,
+          "sources": ["RiftCounter Analysis"]
+        }
+      ],
+      "microTips": [
+        "Start W cycle in fog of war when roaming - enemy won't hear audio cue",
+        "Gold card is not always best - Red for waveclear, Blue for mana sustain",
+        "R reveals invisible enemies - use it to spot assassin flanks in teamfights"
+      ],
+      "abilitySummaries": {
+        "q": "Triple card skillshot",
+        "w": "Card select - blue/red/gold",
+        "e": "Passive attack speed + damage",
+        "r": "Global reveal + teleport"
+      }
+    },
+    {
+      "id": "lissandra",
+      "name": "Lissandra",
+      "displayName": "Lissandra",
+      "aliases": ["liss", "ice witch"],
+      "roles": ["mid"],
+      "tags": ["mage", "tank"],
+      "rangeType": "ranged",
+      "damageProfile": { "physical": 0, "magic": 100, "trueDamage": 0 },
+      "baseStats": { "health": 550, "armor": 22, "magicResist": 30 },
+      "baseProfiles": {
+        "mobilityScore": 6,
+        "ccScore": 9,
+        "burstScore": 7,
+        "sustainScore": 4,
+        "waveclearScore": 8,
+        "scaleScore": 7,
+        "roamScore": 7
+      },
+      "powerSpikes": [
+        { "type": "level", "value": 6, "power": 0.9, "notes": "Frozen Tomb provides engage/self-peel" },
+        { "type": "item", "value": "Luden's Echo", "power": 0.8, "notes": "Strong poke and burst" },
+        { "type": "level", "value": 5, "power": 0.75, "notes": "Maxed Q for poke and waveclear" }
+      ],
+      "abilities": {
+        "passive": { "name": "Iceborn Subjugation", "description": "Enemies that die near Lissandra become Frozen Thralls." },
+        "q": { "name": "Ice Shard", "description": "Throws ice that shatters through first target." },
+        "w": { "name": "Ring of Frost", "description": "Freezes nearby enemies." },
+        "e": { "name": "Glacial Path", "description": "Casts slow-moving claw, can recast to teleport to it." },
+        "ultimate": { "name": "Frozen Tomb", "description": "Encases self (healing) or enemy (damage) in ice, slowing around." }
+      },
+      "canonicalBuilds": [
+        {
+          "type": "standard",
+          "name": "Control Mage",
+          "items": ["Luden's Echo", "Zhonya's Hourglass", "Rabadon's Deathcap", "Void Staff", "Morellonomicon"],
+          "emblem": "Aftershock",
+          "situationalSwaps": [
+            { "condition": "heavy AD", "swap": "Morellonomicon", "for": "Frozen Heart" }
+          ],
+          "confidence": 85,
+          "sources": ["WildRiftFire", "RiftCounter Analysis"]
+        },
+        {
+          "type": "burst",
+          "name": "Burst Lissandra",
+          "items": ["Luden's Echo", "Rabadon's Deathcap", "Infinity Orb", "Void Staff", "Zhonya's Hourglass"],
+          "emblem": "Electrocute",
+          "situationalSwaps": [],
+          "confidence": 77,
+          "sources": ["RiftCounter Analysis"]
+        },
+        {
+          "type": "tank",
+          "name": "Tank Lissandra",
+          "items": ["Rod of Ages", "Zhonya's Hourglass", "Frozen Heart", "Rabadon's Deathcap", "Spirit Visage"],
+          "emblem": "Aftershock",
+          "situationalSwaps": [],
+          "confidence": 71,
+          "sources": ["RiftCounter Analysis"]
+        }
+      ],
+      "microTips": [
+        "E through walls then ult on yourself for safe engages - you're invulnerable during self-ult",
+        "Self-R heals you and zones enemies - use it to survive burst then counter-attack",
+        "W range is small - E into enemies first for guaranteed root"
+      ],
+      "abilitySummaries": {
+        "q": "Line skillshot - extends through first target",
+        "w": "Point-blank AoE root",
+        "e": "Slow projectile - recast to teleport",
+        "r": "Self-cast heal or enemy-cast stasis"
+      }
+    }
+  ]
+}
