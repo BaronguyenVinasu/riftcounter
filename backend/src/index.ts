@@ -1,4 +1,4 @@
-/**
+∑/**
  * RiftCounter Backend Server
  * 
  * Main entry point for the Express API server
@@ -29,10 +29,10 @@ const app = express();
 // Security middleware
 app.use(helmet());
 app.use(cors({
-  origin: config.corsOrigins === '*' ? '*' : config.corsOrigins,
-  credentials: config.corsOrigins !== '*',
+  origin: '*',
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
 }));
-
 // Body parsing
 app.use(express.json({ limit: '1mb' }));
 
