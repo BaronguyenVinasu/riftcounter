@@ -1,56 +1,61 @@
 'use client';
 
 import { useState } from 'react';
-import { ChampionSelect } from '@/components/ChampionSelect';
+import { Atmosphere } from '@/components/layout/Atmosphere';
 import { LaneSelector } from '@/components/LaneSelector';
-import { ResultsPanel } from '@/components/ResultsPanel';
-import { SourceStrip } from '@/components/SourceStrip';
-import PlayAsSelector from '@/components/PlayAsSelector';
-import type { Lane, AnalysisResponse, ChampionSummary } from '@riftcounter/shared';
+import { ChampionSearch } from '@/components/ChampionSearch';
+import { AnalyzeButton } from '@/components/AnalyzeButton';
+import { AnalysisResults } from '@/components/AnalysisResults';
+import { GlassCard } from '@/components/ui/GlassCard';
+import { RotateCcw } from 'lucide-react';
 
-export default function HomePage() {
-  const [selectedEnemies, setSelectedEnemies] = useState<string[]>([]);
-  const [selectedLane, setSelectedLane] = useState<Lane | null>(null);
-  const [playerChampion, setPlayerChampion] = useState<any>(null);
+interface Champion {
+  id: string;
+  name: string;
+  displayName?: string;
+  roles?: string[];
+}
+
+export default function Home() {
+  const [selectedLane, setSelectedLane] = useState<string | null>(null);
+  const [selectedEnemies, setSelectedEnemies] = useState<Champion[]>([]);
+  const [playerChampion, setPlayerChampion] = useState<Champion | null>(null);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
-  const [results, setResults] = useState<AnalysisResponse | null>(null);
+  const [results, setResults] = useState<any>(null);
   const [error, setError] = useState<string | null>(null);
 
+  const canAnalyze = selectedEnemies.length > 0 && selectedLane;
+
   const handleAnalyze = async () => {
-    if (selectedEnemies.length === 0 || !selectedLane) {
-      setError('Please select at least one enemy champion and a lane');
-      return;
-    }
+    if (!canAnalyze) return;
 
     setIsAnalyzing(true);
     setError(null);
 
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/analyze`, {
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
+      const response = await fetch(`${apiUrl}/api/analyze`, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          enemies: selectedEnemies,
+          enemies: selectedEnemies.map(e => e.id),
           lane: selectedLane,
           playerChampion: playerChampion?.id,
           options: {
             preferCounters: !playerChampion,
-            maxCounters: 5,
           },
         }),
       });
 
       if (!response.ok) {
-        const data = await response.json();
-        throw new Error(data.error || 'Analysis failed');
+        throw new Error('Analysis failed');
       }
 
-      const data: AnalysisResponse = await response.json();
+      const data = await response.json();
       setResults(data);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'An error occurred');
+      setError('Failed to analyze. Please try again.');
+      console.error(err);
     } finally {
       setIsAnalyzing(false);
     }
@@ -64,128 +69,125 @@ export default function HomePage() {
     setError(null);
   };
 
-  return (
-    <div className="max-w-7xl mx-auto px-4 py-8">
-      {/* Hero Section */}
-      <div className="text-center mb-12">
-        <h2 className="text-3xl font-bold tracking-tight mb-3">
-          Counter the Enemy
-        </h2>
-        <p className="text-primary-600 dark:text-primary-400 max-w-xl mx-auto">
-          Enter the enemy team composition and your lane to get counter picks,
-          lane tactics, and optimized builds.
-        </p>
-      </div>
+  const handleAddEnemy = (champion: Champion) => {
+    setSelectedEnemies(prev => [...prev, champion]);
+  };
 
-      {/* Input Section */}
-      <div className="grid gap-8 lg:grid-cols-3 mb-8">
-        {/* Enemy Champion Select */}
-        <div className="lg:col-span-2">
-          <div className="card">
-            <h3 className="font-semibold mb-4">Enemy Team</h3>
-            <ChampionSelect
-              selectedChampions={selectedEnemies}
-              onSelect={(champions) => setSelectedEnemies(champions)}
-              maxSelections={5}
-              placeholder="Search champions..."
-            />
-            <p className="text-xs text-primary-500 mt-2">
-              Select 1-5 enemy champions. Fuzzy search and aliases supported.
-            </p>
-          </div>
-        </div>
+  const handleRemoveEnemy = (championId: string) => {
+    setSelectedEnemies(prev => prev.filter(c => c.id !== championId));
+  };
+
+  // Show results view
+  if (results) {
+    return (
+      <Atmosphere intensity="medium" variant="warm">
+        <AnalysisResults 
+          results={results} 
+          onClose={() => setResults(null)} 
+        />
+      </Atmosphere>
+    );
+  }
+
+  return (
+    <Atmosphere intensity="high" variant="warm">
+      <div className="flex flex-col min-h-screen px-6 pb-8">
+        
+        {/* Header */}
+        <header className="pt-12 pb-6 text-center animate-fade-in-down">
+          <h1 className="text-2xl font-light tracking-tight text-white/90 mb-1">
+            RiftCounter
+          </h1>
+          <p className="text-xs text-text-muted uppercase tracking-[0.2em]">
+            Tactical Companion
+          </p>
+        </header>
 
         {/* Lane Selector */}
-        <div>
-          <div className="card h-full">
-            <h3 className="font-semibold mb-4">Your Lane</h3>
-            <LaneSelector
-              selectedLane={selectedLane}
-              onSelect={setSelectedLane}
-            />
+        <div className="py-8 animate-fade-in" style={{ animationDelay: '0.1s' }}>
+          <LaneSelector 
+            selectedLane={selectedLane} 
+            onSelect={setSelectedLane} 
+          />
+        </div>
+
+        {/* Main Content */}
+        <div className="flex-1 flex flex-col justify-center max-w-md mx-auto w-full">
+          
+          {/* Enemy Selection Card */}
+          <div className="animate-fade-in-up" style={{ animationDelay: '0.2s' }}>
+            <GlassCard padding="lg" glow>
+              <ChampionSearch
+                selectedChampions={selectedEnemies}
+                onSelect={handleAddEnemy}
+                onRemove={handleRemoveEnemy}
+                maxSelections={5}
+                label="Enemy Team"
+                placeholder="Search enemy champion..."
+              />
+            </GlassCard>
+          </div>
+
+          {/* Player Champion (Optional) */}
+          <div className="mt-4 animate-fade-in-up" style={{ animationDelay: '0.3s' }}>
+            <GlassCard padding="md">
+              <ChampionSearch
+                selectedChampions={playerChampion ? [playerChampion] : []}
+                onSelect={(c) => setPlayerChampion(c)}
+                onRemove={() => setPlayerChampion(null)}
+                maxSelections={1}
+                label="Playing As (Optional)"
+                placeholder="Your champion..."
+              />
+            </GlassCard>
+          </div>
+
+          {/* Error Message */}
+          {error && (
+            <div className="mt-4 p-4 rounded-2xl bg-threat-glow/10 border border-threat-glow/30 text-center animate-fade-in">
+              <p className="text-threat-glow text-sm">{error}</p>
+            </div>
+          )}
+        </div>
+
+        {/* Bottom Action Bar */}
+        <div className="pt-8 animate-fade-in-up" style={{ animationDelay: '0.4s' }}>
+          <div className="flex items-center justify-between max-w-md mx-auto w-full">
+            
+            {/* Status */}
+            <div className="flex flex-col">
+              <span className="text-text-muted text-xs uppercase tracking-[0.15em]">
+                Status
+              </span>
+              <span className="text-white text-lg font-light">
+                {!selectedLane && 'Select lane'}
+                {selectedLane && selectedEnemies.length === 0 && 'Add enemies'}
+                {selectedLane && selectedEnemies.length > 0 && 'Ready'}
+              </span>
+            </div>
+
+            {/* Action Buttons */}
+            <div className="flex items-center gap-4">
+              {/* Reset Button */}
+              {(selectedEnemies.length > 0 || selectedLane) && (
+                <button
+                  onClick={handleReset}
+                  className="p-3 rounded-full bg-surface-glass border border-white/10 hover:bg-surface-highlight transition-all duration-300"
+                >
+                  <RotateCcw size={18} className="text-text-secondary" />
+                </button>
+              )}
+
+              {/* Analyze Button */}
+              <AnalyzeButton
+                onClick={handleAnalyze}
+                disabled={!canAnalyze}
+                loading={isAnalyzing}
+              />
+            </div>
           </div>
         </div>
       </div>
-
-      {/* Play As Selector */}
-      <div className="mb-8">
-        <PlayAsSelector
-          selectedChampion={playerChampion}
-          onSelect={setPlayerChampion}
-          onAnalyze={handleAnalyze}
-          disabled={isAnalyzing || selectedEnemies.length === 0 || !selectedLane}
-        />
-      </div>
-
-      {/* Error Message */}
-      {error && (
-        <div className="mb-6 p-4 border border-error/30 bg-error/5 text-error text-sm">
-          {error}
-        </div>
-      )}
-
-      {/* Action Buttons */}
-      <div className="flex items-center justify-center gap-4 mb-12">
-        <button
-          onClick={handleAnalyze}
-          disabled={isAnalyzing || selectedEnemies.length === 0 || !selectedLane}
-          className="btn-primary px-8 py-3 text-base"
-        >
-          {isAnalyzing ? (
-            <span className="flex items-center gap-2">
-              <svg
-                className="animate-spin h-4 w-4"
-                fill="none"
-                viewBox="0 0 24 24"
-              >
-                <circle
-                  className="opacity-25"
-                  cx="12"
-                  cy="12"
-                  r="10"
-                  stroke="currentColor"
-                  strokeWidth="4"
-                />
-                <path
-                  className="opacity-75"
-                  fill="currentColor"
-                  d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                />
-              </svg>
-              Analyzing...
-            </span>
-          ) : (
-            'Analyze Matchup'
-          )}
-        </button>
-        {(selectedEnemies.length > 0 || selectedLane || results) && (
-          <button onClick={handleReset} className="btn-secondary px-6 py-3">
-            Reset
-          </button>
-        )}
-      </div>
-
-      {/* Results Section */}
-      {results && (
-        <div className="animate-fade-in">
-          <ResultsPanel results={results} />
-          <SourceStrip
-            sources={results.sources}
-            lastRefreshed={results.lastRefreshed}
-            confidence={results.confidence}
-            uncertainty={results.uncertainty}
-          />
-        </div>
-      )}
-
-      {/* Empty State */}
-      {!results && !isAnalyzing && (
-        <div className="text-center py-16 text-primary-400">
-          <p className="text-lg">
-            Select enemy champions and your lane to begin analysis
-          </p>
-        </div>
-      )}
-    </div>
+    </Atmosphere>
   );
 }

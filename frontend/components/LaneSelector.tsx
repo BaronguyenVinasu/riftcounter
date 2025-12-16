@@ -1,47 +1,61 @@
 'use client';
 
-import { Lane } from '@riftcounter/shared';
+import React from 'react';
 
-interface LaneSelectorProps {
-  selectedLane: Lane | null;
-  onSelect: (lane: Lane) => void;
+interface Lane {
+  id: string;
+  name: string;
+  shortName: string;
 }
 
-const lanes: Array<{ id: Lane; name: string; shortName: string }> = [
-  { id: 'baron', name: 'Baron Lane', shortName: 'TOP' },
-  { id: 'jungle', name: 'Jungle', shortName: 'JG' },
-  { id: 'mid', name: 'Mid Lane', shortName: 'MID' },
-  { id: 'adc', name: 'Dragon Lane', shortName: 'ADC' },
-  { id: 'support', name: 'Support', shortName: 'SUP' },
+const lanes: Lane[] = [
+  { id: 'baron', name: 'Baron Lane', shortName: 'B' },
+  { id: 'jungle', name: 'Jungle', shortName: 'J' },
+  { id: 'mid', name: 'Mid Lane', shortName: 'M' },
+  { id: 'dragon', name: 'Dragon Lane', shortName: 'D' },
+  { id: 'support', name: 'Support', shortName: 'S' },
 ];
 
-export function LaneSelector({ selectedLane, onSelect }: LaneSelectorProps) {
+interface LaneSelectorProps {
+  selectedLane: string | null;
+  onSelect: (lane: string) => void;
+}
+
+export const LaneSelector = ({ selectedLane, onSelect }: LaneSelectorProps) => {
   return (
-    <div className="space-y-2" role="radiogroup" aria-label="Select your lane">
+    <div className="flex justify-center items-center gap-8">
       {lanes.map((lane) => (
         <button
           key={lane.id}
           onClick={() => onSelect(lane.id)}
-          className={`w-full flex items-center gap-3 px-4 py-3 text-left transition-all ${
-            selectedLane === lane.id
-              ? 'bg-primary-900 text-white dark:bg-primary-100 dark:text-primary-900'
-              : 'bg-primary-50 hover:bg-primary-100 dark:bg-primary-800/50 dark:hover:bg-primary-800'
-          }`}
-          role="radio"
-          aria-checked={selectedLane === lane.id}
+          className="flex flex-col items-center gap-3 group transition-all duration-500"
         >
-          <span
-            className={`lane-indicator ${
-              selectedLane === lane.id
-                ? 'bg-white/20 dark:bg-primary-900/20'
-                : ''
-            }`}
+          <span 
+            className={`
+              text-xs tracking-[0.25em] font-medium uppercase
+              transition-all duration-500
+              ${selectedLane === lane.id 
+                ? 'text-white' 
+                : 'text-text-muted group-hover:text-text-secondary'}
+            `}
           >
             {lane.shortName}
           </span>
-          <span className="font-medium">{lane.name}</span>
+          
+          {/* Active indicator dot */}
+          <div 
+            className={`
+              h-1.5 w-1.5 rounded-full 
+              transition-all duration-500
+              ${selectedLane === lane.id 
+                ? 'bg-white scale-100 shadow-[0_0_10px_rgba(255,255,255,0.8)]' 
+                : 'bg-transparent scale-0 group-hover:scale-75 group-hover:bg-text-muted'}
+            `} 
+          />
         </button>
       ))}
     </div>
   );
-}
+};
+
+export default LaneSelector;
