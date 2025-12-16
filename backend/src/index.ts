@@ -1,4 +1,4 @@
-∑/**
+//**
  * RiftCounter Backend Server
  * 
  * Main entry point for the Express API server
