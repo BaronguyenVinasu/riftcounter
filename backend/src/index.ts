@@ -1,4 +1,4 @@
-//**
+/**
  * RiftCounter Backend Server
  * 
  * Main entry point for the Express API server
@@ -27,7 +27,6 @@ const logger = pino({
 const app = express();
 app.set('trust proxy', 1);
 
-
 // Security middleware
 app.use(helmet());
 app.use(cors({
@@ -35,44 +34,41 @@ app.use(cors({
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
 }));
+
 // Body parsing
 app.use(express.json({ limit: '1mb' }));
 
 // Request logging
 app.use(requestLogger(logger));
 
-// Rate limiting for analyze endpoint
-const analyzeRateLimit = rateLimit({
+// Rate limiting
+const limiter = rateLimit({
   windowMs: config.rateLimitWindowMs,
   max: config.rateLimitMax,
-  message: { error: 'Too many requests', code: 'RATE_LIMIT_EXCEEDED' },
   standardHeaders: true,
   legacyHeaders: false,
+  message: { error: 'Too many requests, please try again later' },
 });
+app.use('/api/', limiter);
 
 // Health check
-app.get('/health', (req, res) => {
-  res.json({ status: 'ok', timestamp: new Date().toISOString() });
+app.get('/health', (_req, res) => {
+  res.json({ status: 'ok' });
 });
 
-// API Routes
+// API routes
 app.use('/api/champions', championRoutes);
-app.use('/api/analyze', analyzeRateLimit, analyzeRoutes);
+app.use('/api/analyze', analyzeRoutes);
 app.use('/api/items', itemRoutes);
 app.use('/api/sources', sourceRoutes);
 
 // Error handling
-app.use(errorHandler(logger));
-
-// 404 handler
-app.use((req, res) => {
-  res.status(404).json({ error: 'Not found', code: 'NOT_FOUND' });
-});
+app.use(errorHandler);
 
 // Start server
 async function start() {
   try {
-    // Initialize Redis cache
+    // Initialize cache
     await initializeCache();
     logger.info('Cache initialized');
 
@@ -87,11 +83,9 @@ async function start() {
       logger.info(`Environment: ${config.nodeEnv}`);
     });
   } catch (error) {
-    logger.error(error, 'Failed to start server');
+    logger.error('Failed to start server:', error);
     process.exit(1);
   }
 }
 
 start();
-
-export { app };
