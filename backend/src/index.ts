@@ -29,8 +29,8 @@ const app = express();
 // Security middleware
 app.use(helmet());
 app.use(cors({
-  origin: config.corsOrigins,
-  credentials: true,
+  origin: config.corsOrigins === '*' ? '*' : config.corsOrigins,
+  credentials: config.corsOrigins !== '*',
 }));
 
 // Body parsing
