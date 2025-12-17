@@ -8,6 +8,11 @@ import { MatchupVectorDisplay } from './MatchupVectorDisplay';
 import { SituationalSwaps } from './SituationalSwaps';
 import { PowerSpikesTimeline } from './PowerSpikesTimeline';
 import { SkillCombos } from './SkillCombos';
+import { AbilityWindows } from "./AbilityWindows";
+import { ConditionalTactics } from "./ConditionalTactics";
+import { MicroTips } from "./MicroTips";
+import { WinConditions } from "./WinConditions";
+import { LaneStrategy } from "./LaneStrategy";
 
 interface Counter {
   champion: {
@@ -93,7 +98,7 @@ interface AnalysisResultsProps {
   onClose: () => void;
 }
 
-type TabType = 'overview' | 'counters' | 'tactics' | 'combos' | 'spikes';
+type TabType = 'overview' | 'counters' | 'tactics' | 'strategy' | 'combos' | 'spikes';
 
 export const AnalysisResults = ({ results, onClose }: AnalysisResultsProps) => {
   const [activeTab, setActiveTab] = useState<TabType>('overview');
@@ -127,6 +132,7 @@ export const AnalysisResults = ({ results, onClose }: AnalysisResultsProps) => {
     { id: 'overview', label: 'Overview', icon: <BarChart3 size={14} />, show: hasMatchupVector },
     { id: 'counters', label: 'Counters', icon: <Shield size={14} />, show: true },
     { id: 'tactics', label: 'Tactics', icon: <Target size={14} />, show: tactics.length > 0 },
+    { id: 'strategy', label: 'Strategy', icon: <Target size={14} />, show: true },
     { id: 'combos', label: 'Combos', icon: <Swords size={14} />, show: !!hasCombos },
     { id: 'spikes', label: 'Spikes', icon: <Clock size={14} />, show: !!hasSpikes },
   ];
@@ -344,6 +350,50 @@ export const AnalysisResults = ({ results, onClose }: AnalysisResultsProps) => {
           </div>
         )}
 
+
+        {/* Strategy Tab */}
+        {activeTab === 'strategy' && (
+          <div className="space-y-6 animate-fade-in">
+            <WinConditions
+              winCondition="Focus on your champion's strengths and exploit enemy weaknesses based on the matchup analysis."
+              avoidCondition="Avoid fighting when key abilities are on cooldown or when behind in items."
+            />
+
+            <GlassCard>
+              <h3 className="text-sm font-medium text-white mb-4">Lane Phase Strategy</h3>
+              <LaneStrategy
+                strategy={{
+                  early: [
+                    "Trade when enemy uses abilities on wave",
+                    "Ward river at 2:30 for jungle timing",
+                    "Respect enemy level 2 power spike"
+                  ],
+                  mid: [
+                    "Roam after pushing wave to tower",
+                    "Contest dragon with team",
+                    "Adjust build based on enemy comp"
+                  ],
+                  late: [
+                    "Group with team for objectives",
+                    "Position safely in teamfights",
+                    "Focus priority targets"
+                  ]
+                }}
+              />
+            </GlassCard>
+
+            <GlassCard>
+              <MicroTips
+                tips={[
+                  { tip: "Track enemy key ability cooldowns for trade windows", category: "trading" },
+                  { tip: "Ward pixel brush at 2:30 - standard jungle timing", timing: "2:30", category: "vision" },
+                  { tip: "Freeze wave near tower when ahead to deny CS", category: "farming" },
+                  { tip: "Stay away from walls vs hook/skillshot champions", category: "positioning" }
+                ]}
+              />
+            </GlassCard>
+          </div>
+        )}
         {/* Combos Tab */}
         {activeTab === 'combos' && hasCombos && (
           <div className="animate-fade-in">
