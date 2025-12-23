@@ -38,8 +38,11 @@ import {
   
   EnhancedTactic,
   DetailedSkillCombo,
-} from '../services/championScopedMatchup';
-import { SituationalSwap } from '../shared/types/item';
+} from "../services/championScopedMatchup";
+import {
+  generateEnhancedTactics as generateFullTactics,
+} from "../services/enhancedTacticalEngine";
+import { SituationalSwap } from "../shared/types/item";
 import { generateBuildRecommendations } from '../services/build';
 import { cacheGet, cacheSet, cacheKeys } from '../services/cache';
 import { AppError } from '../middleware/errorHandler';
@@ -75,6 +78,12 @@ interface ChampionScopedResponse extends AnalysisResponse {
     lastRefreshed: string;
   };
   stale?: boolean;
+  abilityWindows?: any[];
+  conditionalTactics?: any[];
+  microTips?: any[];
+  laneStrategy?: { early: string[]; mid: string[]; late: string[] };
+  winCondition?: string;
+  avoidCondition?: string;
 }
 
 /**
@@ -180,6 +189,12 @@ router.post('/', async (req: Request, res: Response, next: NextFunction) => {
     let enhancedTactics: EnhancedTactic[] | undefined;
     let detailedCombos: DetailedSkillCombo[] | undefined;
     let situationalSwaps: SituationalSwap[] | undefined;
+    let abilityWindows: any[] | undefined;
+    let conditionalTactics: any[] | undefined;
+    let microTips: any[] | undefined;
+    let laneStrategy: { early: string[]; mid: string[]; late: string[] } | undefined;
+    let winCondition: string | undefined;
+    let avoidCondition: string | undefined;
 
     if (selectedChampion) {
       // User has selected a champion - provide champion-scoped analysis
@@ -205,6 +220,15 @@ router.post('/', async (req: Request, res: Response, next: NextFunction) => {
         // Generate enhanced tactics with stage breakdown
         enhancedTactics = generateEnhancedTactics(playerChampionData, laneEnemyChamp, matchupVector);
         tactics = enhancedTactics;
+
+        // Generate full tactical output from enhanced engine
+        const fullTacticalOutput = generateFullTactics(playerChampionData, laneEnemyChamp, matchupVector);
+        abilityWindows = fullTacticalOutput.abilityWindows;
+        conditionalTactics = fullTacticalOutput.conditionalTactics;
+        microTips = fullTacticalOutput.microTips;
+        laneStrategy = fullTacticalOutput.laneStrategy;
+        winCondition = fullTacticalOutput.winCondition;
+        avoidCondition = fullTacticalOutput.avoidCondition;
 
         // Generate detailed skill combos
         detailedCombos = generateDetailedCombos(playerChampionData, laneEnemyChamp);
@@ -292,6 +316,12 @@ router.post('/', async (req: Request, res: Response, next: NextFunction) => {
       ...(matchupVector && { matchupVector }),
       ...(enhancedBuilds && { enhancedBuilds }),
       ...(enhancedTactics && { enhancedTactics }),
+      ...(abilityWindows && { abilityWindows }),
+      ...(conditionalTactics && { conditionalTactics }),
+      ...(microTips && { microTips }),
+      ...(laneStrategy && { laneStrategy }),
+      ...(winCondition && { winCondition }),
+      ...(avoidCondition && { avoidCondition }),
       ...(detailedCombos && { detailedCombos }),
       ...(situationalSwaps && { situationalSwaps }),
       ...(selectedChampion && {
