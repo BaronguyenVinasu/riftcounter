@@ -94,6 +94,12 @@ interface AnalysisResultsProps {
     detailedCombos?: SkillCombo[];
     confidence: number;
     uncertainty: string;
+    abilityWindows?: any[];
+    conditionalTactics?: any[];
+    microTips?: any[];
+    laneStrategy?: { early: string[]; mid: string[]; late: string[] };
+    winCondition?: string;
+    avoidCondition?: string;
   };
   onClose: () => void;
 }
@@ -351,47 +357,46 @@ export const AnalysisResults = ({ results, onClose }: AnalysisResultsProps) => {
         )}
 
 
+
         {/* Strategy Tab */}
-        {activeTab === 'strategy' && (
+        {activeTab === "strategy" && (
           <div className="space-y-6 animate-fade-in">
-            <WinConditions
-              winCondition="Focus on your champion's strengths and exploit enemy weaknesses based on the matchup analysis."
-              avoidCondition="Avoid fighting when key abilities are on cooldown or when behind in items."
-            />
-
-            <GlassCard>
-              <h3 className="text-sm font-medium text-white mb-4">Lane Phase Strategy</h3>
-              <LaneStrategy
-                strategy={{
-                  early: [
-                    "Trade when enemy uses abilities on wave",
-                    "Ward river at 2:30 for jungle timing",
-                    "Respect enemy level 2 power spike"
-                  ],
-                  mid: [
-                    "Roam after pushing wave to tower",
-                    "Contest dragon with team",
-                    "Adjust build based on enemy comp"
-                  ],
-                  late: [
-                    "Group with team for objectives",
-                    "Position safely in teamfights",
-                    "Focus priority targets"
-                  ]
-                }}
+            {/* Win Conditions */}
+            {(results.winCondition || results.avoidCondition) && (
+              <WinConditions
+                winCondition={results.winCondition || ""}
+                avoidCondition={results.avoidCondition || ""}
               />
-            </GlassCard>
+            )}
 
-            <GlassCard>
-              <MicroTips
-                tips={[
-                  { tip: "Track enemy key ability cooldowns for trade windows", category: "trading" },
-                  { tip: "Ward pixel brush at 2:30 - standard jungle timing", timing: "2:30", category: "vision" },
-                  { tip: "Freeze wave near tower when ahead to deny CS", category: "farming" },
-                  { tip: "Stay away from walls vs hook/skillshot champions", category: "positioning" }
-                ]}
-              />
-            </GlassCard>
+            {/* Ability Windows */}
+            {results.abilityWindows && results.abilityWindows.length > 0 && (
+              <GlassCard>
+                <AbilityWindows windows={results.abilityWindows} />
+              </GlassCard>
+            )}
+
+            {/* Lane Strategy */}
+            {results.laneStrategy && (
+              <GlassCard>
+                <h3 className="text-sm font-medium text-white mb-4">Lane Phase Strategy</h3>
+                <LaneStrategy strategy={results.laneStrategy} />
+              </GlassCard>
+            )}
+
+            {/* Conditional Tactics */}
+            {results.conditionalTactics && results.conditionalTactics.length > 0 && (
+              <GlassCard>
+                <ConditionalTactics tactics={results.conditionalTactics} />
+              </GlassCard>
+            )}
+
+            {/* Micro Tips */}
+            {results.microTips && results.microTips.length > 0 && (
+              <GlassCard>
+                <MicroTips tips={results.microTips} />
+              </GlassCard>
+            )}
           </div>
         )}
         {/* Combos Tab */}
