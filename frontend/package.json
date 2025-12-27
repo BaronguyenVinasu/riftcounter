@@ -13,6 +13,7 @@
     "test:watch": "vitest"
   },
   "dependencies": {
+    "@vercel/analytics": "^1.6.1",
     "clsx": "^2.0.0",
     "lucide-react": "^0.561.0",
     "next": "^14.0.4",
